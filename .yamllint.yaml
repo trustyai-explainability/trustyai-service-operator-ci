@@ -1,9 +1,0 @@
-extends: default
-
-rules:
-  line-length:
-    max: 80
-    level: warning
-  hyphens:
-    max-spaces-after: 1
-    level: warning
