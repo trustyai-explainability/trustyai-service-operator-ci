@@ -1,0 +1,13 @@
+releases:
+  - name: TrustyAI operator
+    version: 1.32.0
+    repoUrl: https://github.com/trustyai-explainability/trustyai-service-operator
+  - name: TrustyAI service
+    version: 0.25.0
+    repoUrl: https://github.com/trustyai-explainability/trustyai-explainability
+  - name: TrustyAI LMEval driver
+    version: 1.32.0
+    repoUrl: https://github.com/trustyai-explainability/trustyai-service-operator
+  - name: TrustyAI LMEval job
+    version: 1.32.0
+    repoUrl: https://github.com/opendatahub-io/lm-evaluation-harness
