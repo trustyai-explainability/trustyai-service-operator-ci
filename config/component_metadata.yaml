@@ -1,0 +1,16 @@
+releases:
+  - name: TrustyAI operator
+    version: 1.33.0
+    repoUrl: https://github.com/trustyai-explainability/trustyai-service-operator
+  - name: TrustyAI service
+    version: 0.26.0
+    repoUrl: https://github.com/trustyai-explainability/trustyai-explainability
+  - name: TrustyAI LMEval driver
+    version: 1.33.0
+    repoUrl: https://github.com/trustyai-explainability/trustyai-service-operator
+  - name: TrustyAI LMEval job
+    version: 0.4.6
+    repoUrl: https://github.com/opendatahub-io/lm-evaluation-harness
+  - name: TrustyAI Guardrails orchestrator
+    version: 8796e59ac00b6dfe3eebeb61a59c26cae64dd4d3
+    repoUrl: https://github.com/trustyai-explainability/fms-guardrails-orchestrator
