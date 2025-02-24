@@ -109,8 +109,140 @@ spec:
                     properties:
                       pvcName:
                         type: string
-                    required:
-                    - pvcName
+                      s3:
+                        properties:
+                          accessKeyId:
+                            description: SecretKeySelector selects a key of a Secret.
+                            properties:
+                              key:
+                                description: The key of the secret to select from.  Must
+                                  be a valid secret key.
+                                type: string
+                              name:
+                                description: |-
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                type: string
+                              optional:
+                                description: Specify whether the Secret or its key
+                                  must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                            x-kubernetes-map-type: atomic
+                          bucket:
+                            description: SecretKeySelector selects a key of a Secret.
+                            properties:
+                              key:
+                                description: The key of the secret to select from.  Must
+                                  be a valid secret key.
+                                type: string
+                              name:
+                                description: |-
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                type: string
+                              optional:
+                                description: Specify whether the Secret or its key
+                                  must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                            x-kubernetes-map-type: atomic
+                          caBundle:
+                            description: SecretKeySelector selects a key of a Secret.
+                            properties:
+                              key:
+                                description: The key of the secret to select from.  Must
+                                  be a valid secret key.
+                                type: string
+                              name:
+                                description: |-
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                type: string
+                              optional:
+                                description: Specify whether the Secret or its key
+                                  must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                            x-kubernetes-map-type: atomic
+                          endpoint:
+                            description: SecretKeySelector selects a key of a Secret.
+                            properties:
+                              key:
+                                description: The key of the secret to select from.  Must
+                                  be a valid secret key.
+                                type: string
+                              name:
+                                description: |-
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                type: string
+                              optional:
+                                description: Specify whether the Secret or its key
+                                  must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                            x-kubernetes-map-type: atomic
+                          path:
+                            type: string
+                          region:
+                            description: SecretKeySelector selects a key of a Secret.
+                            properties:
+                              key:
+                                description: The key of the secret to select from.  Must
+                                  be a valid secret key.
+                                type: string
+                              name:
+                                description: |-
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                type: string
+                              optional:
+                                description: Specify whether the Secret or its key
+                                  must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                            x-kubernetes-map-type: atomic
+                          secretAccessKey:
+                            description: SecretKeySelector selects a key of a Secret.
+                            properties:
+                              key:
+                                description: The key of the secret to select from.  Must
+                                  be a valid secret key.
+                                type: string
+                              name:
+                                description: |-
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                type: string
+                              optional:
+                                description: Specify whether the Secret or its key
+                                  must be defined
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                            x-kubernetes-map-type: atomic
+                          verifySSL:
+                            type: boolean
+                        required:
+                        - accessKeyId
+                        - bucket
+                        - endpoint
+                        - path
+                        - region
+                        - secretAccessKey
+                        type: object
                     type: object
                 required:
                 - storage
@@ -4589,6 +4721,42 @@ spec:
               taskList:
                 description: Evaluation task list
                 properties:
+                  custom:
+                    description: Custom Unitxt artifacts that can be used in a TaskRecipe
+                    properties:
+                      systemPrompts:
+                        items:
+                          properties:
+                            name:
+                              description: Name of the custom artifact
+                              type: string
+                            value:
+                              description: |-
+                                Value of the custom artifact. It could be a JSON string or plain text
+                                depending on the artifact type
+                              type: string
+                          required:
+                          - name
+                          - value
+                          type: object
+                        type: array
+                      templates:
+                        items:
+                          properties:
+                            name:
+                              description: Name of the custom artifact
+                              type: string
+                            value:
+                              description: |-
+                                Value of the custom artifact. It could be a JSON string or plain text
+                                depending on the artifact type
+                              type: string
+                          required:
+                          - name
+                          - value
+                          type: object
+                        type: array
+                    type: object
                   taskNames:
                     description: TaskNames from lm-eval's task list
                     items:
@@ -4632,15 +4800,38 @@ spec:
                         numDemos:
                           description: Number of fewshot
                           type: integer
+                        systemPrompt:
+                          description: The Unitxt System Prompt
+                          properties:
+                            name:
+                              description: Unitxt System Prompt id
+                              type: string
+                            ref:
+                              description: The name of the custom systemPrompt in
+                                the custom field. Its value is a custom system prompt
+                                string
+                              type: string
+                          type: object
                         task:
                           description: The Unitxt Task
                           type: string
                         template:
                           description: The Unitxt template
-                          type: string
+                          properties:
+                            name:
+                              description: Unitxt template ID
+                              type: string
+                            ref:
+                              description: |-
+                                The name of the custom template in the custom field. Its value is a JSON string
+                                for a custom Unitxt template. Use the documentation here: https://www.unitxt.ai/en/latest/docs/adding_template.html
+                                to compose a custom template, store it as a JSON file by calling the
+                                add_to_catalog API: https://www.unitxt.ai/en/latest/docs/saving_and_loading_from_catalog.html#adding-assets-to-the-catalog,
+                                and use the JSON content as the value here.
+                              type: string
+                          type: object
                       required:
                       - card
-                      - template
                       type: object
                     type: array
                 type: object
