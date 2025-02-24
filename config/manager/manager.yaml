@@ -32,7 +32,9 @@ spec:
             - /manager
           args:
             - --leader-elect
-          image: $(trustyaiOperatorImage)
+            - --enable-services
+            - "TAS,LMES,GORCH"
+          image: "quay.io/trustyai/trustyai-service-operator:latest"
           name: manager
           securityContext:
             runAsNonRoot: true
@@ -56,8 +58,8 @@ spec:
             periodSeconds: 10
           resources:
             limits:
-              cpu: 500m
-              memory: 128Mi
+              cpu: 900m
+              memory: 700Mi
             requests:
               cpu: 10m
               memory: 64Mi
