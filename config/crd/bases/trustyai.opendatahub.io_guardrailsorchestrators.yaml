@@ -4,20 +4,21 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.16.3
-  name: trustyaiservices.trustyai.opendatahub.io
+  name: guardrailsorchestrators.trustyai.opendatahub.io
 spec:
   group: trustyai.opendatahub.io
   names:
-    kind: TrustyAIService
-    listKind: TrustyAIServiceList
-    plural: trustyaiservices
-    singular: trustyaiservice
+    kind: GuardrailsOrchestrator
+    listKind: GuardrailsOrchestratorList
+    plural: guardrailsorchestrators
+    singular: guardrailsorchestrator
   scope: Namespaced
   versions:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: TrustyAIService is the Schema for the trustyaiservices API
+        description: GuardrailsOrchestrator is the Schema for the guardrailsorchestrators
+          API.
         properties:
           apiVersion:
             description: |-
@@ -37,55 +38,61 @@ spec:
           metadata:
             type: object
           spec:
-            description: TrustyAIServiceSpec defines the desired state of TrustyAIService
+            description: GuardrailsOrchestratorSpec defines the desired state of GuardrailsOrchestrator.
             properties:
-              data:
+              enableDetectors:
+                description: Boolean flag to enable/disable detectors
+                type: boolean
+              enableVllmGateway:
+                description: Boolean flag to enable/disable the vLLM gateway
+                type: boolean
+              orchestratorConfig:
+                description: Name of configmap containing generator,detector,and chunker
+                  arguments
+                type: string
+              otelExporter:
+                description: List of orchestrator enviroment variables for configuring
+                  the OTLP exporter
                 properties:
-                  filename:
+                  metricsEndpoint:
+                    description: Overrides the OTLP endpoint for metrics
                     type: string
-                  format:
+                  metricsProtocol:
+                    description: Overrides the protocol for traces
                     type: string
-                type: object
-              metrics:
-                properties:
-                  batchSize:
-                    type: integer
-                  schedule:
+                  otlpEndpoint:
+                    description: Sets the OTLP endpoint
                     type: string
-                required:
-                - schedule
+                  otlpExport:
+                    description: Specifies which data types to export
+                    type: string
+                  protocol:
+                    description: Sets the protocol for all the OTLP endpoints
+                    type: string
+                  tracesEndpoint:
+                    description: Overrides the OTLP endpoint for traces
+                    type: string
+                  tracesProtocol:
+                    description: Overrides the protocol for traces
+                    type: string
                 type: object
               replicas:
                 description: Number of replicas
                 format: int32
                 type: integer
-              storage:
-                properties:
-                  databaseConfigurations:
-                    type: string
-                  folder:
-                    type: string
-                  format:
-                    description: Format only supports "PVC" or "DATABASE" values
-                    enum:
-                    - PVC
-                    - DATABASE
-                    type: string
-                  size:
-                    type: string
-                required:
-                - format
-                type: object
+              vllmGatewayConfig:
+                description: ' Name of the configmap containg vLLM gateway arguments'
+                type: string
             required:
-            - metrics
-            - storage
+            - orchestratorConfig
+            - replicas
             type: object
           status:
-            description: TrustyAIServiceStatus defines the observed state of TrustyAIService
             properties:
               conditions:
+                description: Conditions describes the state of the GuardrailsOrchestrator
+                  resource.
                 items:
-                  description: Condition represents possible conditions of a TrustyAIServiceStatus
                   properties:
                     lastTransitionTime:
                       format: date-time
@@ -99,25 +106,12 @@ spec:
                     type:
                       type: string
                   required:
-                  - lastTransitionTime
-                  - message
-                  - reason
                   - status
                   - type
                   type: object
                 type: array
               phase:
-                description: Define your status fields here
                 type: string
-              ready:
-                type: string
-              replicas:
-                format: int32
-                type: integer
-            required:
-            - conditions
-            - phase
-            - replicas
             type: object
         type: object
     served: true
