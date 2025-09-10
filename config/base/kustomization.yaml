@@ -5,6 +5,7 @@ resources:
   - ../crd
   - ../rbac
   - ../manager
+  - ../prometheus
 
 commonLabels:
   app.kubernetes.io/part-of: trustyai
@@ -41,3 +42,10 @@ vars:
       apiVersion: v1
     fieldref:
       fieldpath: data.oauthProxyImage
+  - name: kServeServerless
+    objref:
+      kind: ConfigMap
+      name: config
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.kServeServerless
