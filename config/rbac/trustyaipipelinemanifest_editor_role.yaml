@@ -1,0 +1,27 @@
+# permissions for end users to edit trustyaipipelinemanifest.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: trustyai-service-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: trustyaipipelinemanifest-editor-role
+rules:
+- apiGroups:
+  - trustyai.opendatahub.io
+  resources:
+  - trustyaipipelinemanifest
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - trustyai.opendatahub.io
+  resources:
+  - trustyaipipelinemanifest/status
+  verbs:
+  - get
