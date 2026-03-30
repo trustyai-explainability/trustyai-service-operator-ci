@@ -32,8 +32,13 @@ spec:
             - /manager
           args:
             - --leader-elect
+            - --enable-services
+            - "TAS,LMES,GORCH,NEMO_GUARDRAILS,EVALHUB"
           image: $(trustyaiOperatorImage)
           name: manager
+          env:
+            - name: GOMEMLIMIT
+              value: "630MiB"
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
@@ -56,8 +61,8 @@ spec:
             periodSeconds: 10
           resources:
             limits:
-              cpu: 500m
-              memory: 128Mi
+              cpu: 900m
+              memory: 700Mi
             requests:
               cpu: 10m
               memory: 64Mi
