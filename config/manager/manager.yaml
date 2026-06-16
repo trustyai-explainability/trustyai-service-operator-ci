@@ -4,7 +4,7 @@ metadata:
   name: controller-manager
   namespace: system
   labels:
-    control-plane: controller-manager
+    control-plane: trustyai-service-operator
     app.kubernetes.io/name: deployment
     app.kubernetes.io/instance: trustyai-service-operator-controller-manager
     app.kubernetes.io/component: manager
@@ -14,14 +14,14 @@ metadata:
 spec:
   selector:
     matchLabels:
-      control-plane: controller-manager
+      control-plane: trustyai-service-operator
   replicas: 1
   template:
     metadata:
       annotations:
         kubectl.kubernetes.io/default-container: manager
       labels:
-        control-plane: controller-manager
+        control-plane: trustyai-service-operator
     spec:
       securityContext:
         runAsNonRoot: true
@@ -32,8 +32,20 @@ spec:
             - /manager
           args:
             - --leader-elect
+            # --enable-services will be set by overlays based on which components are included
           image: $(trustyaiOperatorImage)
           name: manager
+          ports:
+            - containerPort: 9443
+              name: webhook-server
+              protocol: TCP
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: /tmp/k8s-webhook-server/serving-certs
+              readOnly: true
+          env:
+            - name: GOMEMLIMIT
+              value: "630MiB"
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
@@ -56,10 +68,14 @@ spec:
             periodSeconds: 10
           resources:
             limits:
-              cpu: 500m
-              memory: 128Mi
+              cpu: 900m
+              memory: 700Mi
             requests:
               cpu: 10m
               memory: 64Mi
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: webhook-server-cert
       serviceAccountName: controller-manager
       terminationGracePeriodSeconds: 10
